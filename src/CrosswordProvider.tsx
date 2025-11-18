@@ -80,6 +80,12 @@ export const crosswordProviderPropTypes = {
     highlightBackground: PropTypes.string,
   }),
 
+  /**
+   * when true, disables the native on-screen keyboard (helpful when providing
+   * your own custom keyboard on mobile)
+   */
+  mobile: PropTypes.bool,
+
   /** whether to use browser storage to persist the player's work-in-progress */
   useStorage: PropTypes.bool,
 
@@ -269,6 +275,12 @@ export type CrosswordProviderProps = EnhancedProps<
      * callback function called when a clue is selected
      */
     onClueSelected?: (direction: Direction, number: string) => void;
+
+    /**
+     * when true, disables the native on-screen keyboard (helpful when providing
+     * your own custom keyboard on mobile)
+     */
+    mobile?: boolean;
   }
 >;
 
@@ -301,6 +313,13 @@ export interface CrosswordProviderImperative {
    * @since 4.1.0
    */
   setGuess: (row: number, col: number, guess: string) => void;
+
+  /**
+   * Fills a specific cell with the provided character.
+   *
+   * @since 5.3.0
+   */
+  fillCell: (row: number, col: number, guess: string) => void;
 }
 
 const defaultTheme: CrosswordProviderProps['theme'] = {
@@ -331,6 +350,7 @@ const CrosswordProvider = React.forwardRef<
     {
       data,
       theme,
+      mobile,
       onAnswerComplete,
       onAnswerCorrect,
       onCorrect,
@@ -1053,6 +1073,15 @@ const CrosswordProvider = React.forwardRef<
           // REVIEW: should we force-case this?
           setCellCharacter(row, col, guess.toUpperCase());
         },
+
+        /**
+         * Fills a specific cell with the provided character.
+         *
+         * @since 5.3.0
+         */
+        fillCell: (row: number, col: number, guess: string) => {
+          setCellCharacter(row, col, guess.toUpperCase());
+        },
       }),
       [
         clues,
@@ -1085,6 +1114,7 @@ const CrosswordProvider = React.forwardRef<
         selectedNumber: currentNumber,
 
         crosswordCorrect,
+        mobile: !!mobile,
       }),
       [
         rows,
@@ -1103,6 +1133,7 @@ const CrosswordProvider = React.forwardRef<
         currentDirection,
         currentNumber,
         crosswordCorrect,
+        mobile,
       ]
     );
 
@@ -1133,5 +1164,6 @@ CrosswordProvider.defaultProps = {
   onCrosswordCorrect: undefined,
   onCellChange: undefined,
   onClueSelected: undefined,
+  mobile: false,
   children: undefined,
 };

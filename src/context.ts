@@ -45,6 +45,7 @@ export interface CrosswordContextType {
   selectedNumber: string;
 
   crosswordCorrect: boolean;
+  mobile: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -75,6 +76,7 @@ export const CrosswordContext = React.createContext<CrosswordContextType>({
   selectedNumber: '',
 
   crosswordCorrect: false,
+  mobile: false,
 });
 
 export interface CrosswordSizeContextType {

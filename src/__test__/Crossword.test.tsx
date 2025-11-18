@@ -216,4 +216,33 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
     textEl = queryByText('T');
     expect(textEl).toBeTruthy();
   });
+
+  it('fillCell() can set a guess', () => {
+    const ref = React.createRef<CrosswordImperative>();
+    const { queryByText } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
+
+    let textEl = queryByText('T');
+    expect(textEl).toBeFalsy();
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.fillCell(0, 0, 'T');
+    });
+
+    textEl = queryByText('T');
+    expect(textEl).toBeTruthy();
+  });
+
+  it('disables the native keyboard when mobile is true', () => {
+    const { getByLabelText } = render(
+      <Crossword {...defaultProps} data={simpleData} mobile />
+    );
+
+    expect(getByLabelText('crossword-input')).toHaveAttribute(
+      'inputmode',
+      'none'
+    );
+  });
 });

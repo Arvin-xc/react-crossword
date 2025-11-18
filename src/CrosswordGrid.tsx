@@ -90,6 +90,7 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
     selectedPosition: { row: focusedRow, col: focusedCol },
     selectedDirection: currentDirection,
     selectedNumber: currentNumber,
+    mobile,
   } = useContext(CrosswordContext);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -233,6 +234,7 @@ export default function CrosswordGrid({ theme }: CrosswordGridProps) {
               autoComplete="off"
               spellCheck="false"
               autoCorrect="off"
+              inputMode={mobile ? 'none' : undefined}
               style={inputStyle}
             />
           </div>

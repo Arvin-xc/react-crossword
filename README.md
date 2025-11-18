@@ -124,16 +124,22 @@ help your application "understand" the player's progress:
 | `onCellChange`       | callback function called when a cell changes (e.g. when the user types a letter); passed the row and column and the character typed                                                                                                                        |
 | `onClueSelected`     | callback function called when a clue is selected; passed the direction and the “number”                                                                                                                                                                    |
 
+### Mobile keyboard control
+
+Set the `mobile` prop to `true` to prevent the underlying hidden input from invoking the native on-screen keyboard. This is useful when you are providing your own custom keyboard UI on mobile devices.
+
 ### Imperative methods
 
 The following imperative methods can be called on a "ref" handle to the component:
 
-| method name            | parameters | description                                                                                         |
-| ---------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
-| `focus()`              | _(none)_   | Sets focus to the crossword component.                                                              |
-| `reset()`              | _(none)_   | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
-| `fillAllAnswers()`     | _(none)_   | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
-| `isCrosswordCorrect()` | _(none)_   | Returns whether the crossword is entirely correct or not.                                           |
+| method name                 | parameters                                  | description                                                                                         |
+| --------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `focus()`                   | _(none)_                                    | Sets focus to the crossword component.                                                              |
+| `reset()`                   | _(none)_                                    | Resets the entire crossword; clearing all answers in the grid and also any persisted data.          |
+| `fillAllAnswers()`          | _(none)_                                    | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
+| `isCrosswordCorrect()`      | _(none)_                                    | Returns whether the crossword is entirely correct or not.                                           |
+| `setGuess(row, col, guess)` | `(row: number, col: number, guess: string)` | Sets the “guess” value for a specific grid position.                                                |
+| `fillCell(row, col, guess)` | `(row: number, col: number, guess: string)` | Fills a specific cell with the provided character.                                                  |
 
 ## Background
 

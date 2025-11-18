@@ -931,6 +931,34 @@ describe('imperative commands', () => {
       expect(() => ref.current?.setGuess(1, 0, 'T')).toThrow();
     });
   });
+
+  it('fillCell() can set a guess', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    const { queryByText } = render(
+      <Simple withGrid withClues forwardedRef={ref} />
+    );
+
+    let textEl = queryByText('T');
+    expect(textEl).toBeFalsy();
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.fillCell(0, 0, 'T');
+    });
+
+    textEl = queryByText('T');
+    expect(textEl).toBeTruthy();
+  });
+
+  it('fillCell() throws on an unused cell', () => {
+    const ref = React.createRef<CrosswordProviderImperative>();
+    render(<Simple withGrid withClues forwardedRef={ref} />);
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      expect(() => ref.current?.fillCell(1, 0, 'T')).toThrow();
+    });
+  });
 });
 
 // for ease of calling, textEl is an HTMLElement.... but it's *really* a
