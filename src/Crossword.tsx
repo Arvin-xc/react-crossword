@@ -128,12 +128,11 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
           providerRef.current?.setGuess(row, col, guess),
 
         /**
-         * Fills a specific cell with the provided character.
+         * Fills the currently selected cell with the provided character.
          *
          * @since 5.3.0
          */
-        fillCell: (row: number, col: number, guess: string) =>
-          providerRef.current?.fillCell(row, col, guess),
+        fillCell: (letter: string) => providerRef.current?.fillCell(letter),
       }),
       []
     );

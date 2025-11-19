@@ -943,21 +943,11 @@ describe('imperative commands', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current?.fillCell(0, 0, 'T');
+      ref.current?.fillCell('T');
     });
 
     textEl = queryByText('T');
     expect(textEl).toBeTruthy();
-  });
-
-  it('fillCell() throws on an unused cell', () => {
-    const ref = React.createRef<CrosswordProviderImperative>();
-    render(<Simple withGrid withClues forwardedRef={ref} />);
-
-    expect(ref.current).toBeTruthy();
-    act(() => {
-      expect(() => ref.current?.fillCell(1, 0, 'T')).toThrow();
-    });
   });
 });
 

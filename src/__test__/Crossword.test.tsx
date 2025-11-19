@@ -228,11 +228,31 @@ describe('imperative commands (forwarded to CrosswordProvider)', () => {
 
     expect(ref.current).toBeTruthy();
     act(() => {
-      ref.current?.fillCell(0, 0, 'T');
+      ref.current?.fillCell('T');
     });
 
     textEl = queryByText('T');
     expect(textEl).toBeTruthy();
+  });
+
+  it('fillCell() moves focus to the next cell', () => {
+    const ref = React.createRef<CrosswordImperative>();
+    const { getByLabelText } = render(
+      <Crossword {...defaultProps} data={simpleData} ref={ref} />
+    );
+
+    const input = getByLabelText('crossword-input');
+    act(() => {
+      ref.current?.focus();
+    });
+    const leftBefore = input.style.left;
+
+    expect(ref.current).toBeTruthy();
+    act(() => {
+      ref.current?.fillCell('T');
+    });
+
+    expect(input.style.left).not.toBe(leftBefore);
   });
 
   it('disables the native keyboard when mobile is true', () => {

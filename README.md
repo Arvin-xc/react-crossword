@@ -139,7 +139,7 @@ The following imperative methods can be called on a "ref" handle to the componen
 | `fillAllAnswers()`          | _(none)_                                    | Fills all the answers in the grid and calls the `onLoadedCorrect` callback with _**every**_ answer. |
 | `isCrosswordCorrect()`      | _(none)_                                    | Returns whether the crossword is entirely correct or not.                                           |
 | `setGuess(row, col, guess)` | `(row: number, col: number, guess: string)` | Sets the “guess” value for a specific grid position.                                                |
-| `fillCell(row, col, guess)` | `(row: number, col: number, guess: string)` | Fills a specific cell with the provided character.                                                  |
+| `fillCell(letter)`          | `(letter: string)`                          | Fills the currently selected cell with the provided character and advances focus.                   |
 
 ## Background
 

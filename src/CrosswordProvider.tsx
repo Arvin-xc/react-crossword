@@ -315,11 +315,11 @@ export interface CrosswordProviderImperative {
   setGuess: (row: number, col: number, guess: string) => void;
 
   /**
-   * Fills a specific cell with the provided character.
+   * Fills the currently selected cell with the provided character.
    *
    * @since 5.3.0
    */
-  fillCell: (row: number, col: number, guess: string) => void;
+  fillCell: (letter: string) => void;
 }
 
 const defaultTheme: CrosswordProviderProps['theme'] = {
@@ -1075,18 +1075,23 @@ const CrosswordProvider = React.forwardRef<
         },
 
         /**
-         * Fills a specific cell with the provided character.
+         * Fills the currently selected cell with the provided character.
          *
          * @since 5.3.0
          */
-        fillCell: (row: number, col: number, guess: string) => {
-          setCellCharacter(row, col, guess.toUpperCase());
+        fillCell: (letter: string) => {
+          if (!letter) {
+            return;
+          }
+
+          handleSingleCharacter(letter[0]);
         },
       }),
       [
         clues,
         crosswordCorrect,
         focus,
+        handleSingleCharacter,
         onLoadedCorrect,
         setCellCharacter,
         storageKey,
