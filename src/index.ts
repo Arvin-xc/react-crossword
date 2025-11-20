@@ -7,8 +7,6 @@ import Cell from './Cell';
 
 import Clue from './Clue';
 
-import SelectedClue from './SelectedClue';
-
 import DirectionClues from './DirectionClues';
 
 import Crossword, { CrosswordImperative, CrosswordProps } from './Crossword';
@@ -32,7 +30,6 @@ import { useIpuz } from './ipuz';
 export {
   Cell,
   Clue,
-  SelectedClue,
   DirectionClues,
   Crossword,
   CrosswordImperative,

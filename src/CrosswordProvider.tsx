@@ -326,6 +326,12 @@ export interface CrosswordProviderImperative {
    * after the last.
    */
   selectNextClue: () => void;
+
+  /**
+   * Moves selection to the previous clue in order; wraps to the last clue when
+   * called on the first clue.
+   */
+  selectPreviousClue: () => void;
 }
 
 const defaultTheme: CrosswordProviderProps['theme'] = {
@@ -995,6 +1001,38 @@ const CrosswordProvider = React.forwardRef<
       handleClueSelected(nextClue.direction, nextClue.number);
     }, [clues, currentDirection, currentNumber, handleClueSelected]);
 
+    const selectPreviousClue = useCallback(() => {
+      if (!clues) {
+        return;
+      }
+
+      const orderedClues = bothDirections.reduce<
+        { direction: Direction; number: string }[]
+      >((memo, dir) => {
+        clues[dir].forEach(({ number }) => {
+          memo.push({ direction: dir, number });
+        });
+        return memo;
+      }, []);
+
+      if (orderedClues.length === 0) {
+        return;
+      }
+
+      const currentIndex = orderedClues.findIndex(
+        ({ direction, number }) =>
+          direction === currentDirection && number === currentNumber
+      );
+
+      const previousIndex =
+        currentIndex === -1
+          ? orderedClues.length - 1
+          : (currentIndex - 1 + orderedClues.length) % orderedClues.length;
+
+      const previousClue = orderedClues[previousIndex];
+      handleClueSelected(previousClue.direction, previousClue.number);
+    }, [clues, currentDirection, currentNumber, handleClueSelected]);
+
     const registerFocusHandler = useCallback(
       (focusHandler: FocusHandler | null) => {
         // console.log('CrosswordProvider.registerFocusHandler() called', {
@@ -1116,6 +1154,10 @@ const CrosswordProvider = React.forwardRef<
          * @since 5.3.0
          */
         fillCell: (letter: string) => {
+          if (!letter) {
+            return;
+          }
+
           handleSingleCharacter(letter[0]);
         },
 
@@ -1126,6 +1168,14 @@ const CrosswordProvider = React.forwardRef<
         selectNextClue: () => {
           selectNextClue();
         },
+
+        /**
+         * Moves selection to the previous clue in order; wraps to the last
+         * clue when called on the first clue.
+         */
+        selectPreviousClue: () => {
+          selectPreviousClue();
+        },
       }),
       [
         clues,
@@ -1133,6 +1183,7 @@ const CrosswordProvider = React.forwardRef<
         focus,
         handleSingleCharacter,
         selectNextClue,
+        selectPreviousClue,
         onLoadedCorrect,
         setCellCharacter,
         storageKey,
@@ -1153,6 +1204,7 @@ const CrosswordProvider = React.forwardRef<
         handleInputClick,
         handleClueSelected,
         selectNextClue,
+        selectPreviousClue,
         registerFocusHandler,
 
         focused,
@@ -1174,6 +1226,7 @@ const CrosswordProvider = React.forwardRef<
         handleInputClick,
         handleClueSelected,
         selectNextClue,
+        selectPreviousClue,
         registerFocusHandler,
         focused,
         focusedRow,

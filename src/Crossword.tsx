@@ -139,6 +139,12 @@ const Crossword = React.forwardRef<CrosswordImperative, CrosswordProps>(
          * clue after the last.
          */
         selectNextClue: () => providerRef.current?.selectNextClue(),
+
+        /**
+         * Moves selection to the previous clue in order; wraps back to the
+         * last clue when starting from the first.
+         */
+        selectPreviousClue: () => providerRef.current?.selectPreviousClue(),
       }),
       []
     );

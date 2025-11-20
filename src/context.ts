@@ -37,6 +37,8 @@ export interface CrosswordContextType {
   handleClueSelected: (direction: Direction, number: string) => void;
   /** Move selection to the next clue, wrapping after the last. */
   selectNextClue: () => void;
+  /** Move selection to the previous clue, wrapping before the first. */
+  selectPreviousClue: () => void;
   /** Provides registration for focus actions */
   registerFocusHandler: (focusHandler: FocusHandler | null) => void;
 
@@ -71,6 +73,7 @@ export const CrosswordContext = React.createContext<CrosswordContextType>({
   handleInputClick: nop,
   handleClueSelected: nop,
   selectNextClue: nop,
+  selectPreviousClue: nop,
   registerFocusHandler: nop,
 
   focused: false,
