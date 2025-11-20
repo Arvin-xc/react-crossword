@@ -35,6 +35,8 @@ export interface CrosswordContextType {
   handleInputClick: React.MouseEventHandler<HTMLInputElement>;
   /** A handler for clue selection. */
   handleClueSelected: (direction: Direction, number: string) => void;
+  /** Move selection to the next clue, wrapping after the last. */
+  selectNextClue: () => void;
   /** Provides registration for focus actions */
   registerFocusHandler: (focusHandler: FocusHandler | null) => void;
 
@@ -68,6 +70,7 @@ export const CrosswordContext = React.createContext<CrosswordContextType>({
   handleCellClick: nop,
   handleInputClick: nop,
   handleClueSelected: nop,
+  selectNextClue: nop,
   registerFocusHandler: nop,
 
   focused: false,

@@ -320,6 +320,12 @@ export interface CrosswordProviderImperative {
    * @since 5.3.0
    */
   fillCell: (letter: string) => void;
+
+  /**
+   * Moves selection to the next clue in order; wraps back to the first clue
+   * after the last.
+   */
+  selectNextClue: () => void;
 }
 
 const defaultTheme: CrosswordProviderProps['theme'] = {
@@ -959,6 +965,36 @@ const CrosswordProvider = React.forwardRef<
       [clues, focus, moveTo, onClueSelected]
     );
 
+    const selectNextClue = useCallback(() => {
+      if (!clues) {
+        return;
+      }
+
+      const orderedClues = bothDirections.reduce<
+        { direction: Direction; number: string }[]
+      >((memo, dir) => {
+        clues[dir].forEach(({ number }) => {
+          memo.push({ direction: dir, number });
+        });
+        return memo;
+      }, []);
+
+      if (orderedClues.length === 0) {
+        return;
+      }
+
+      const currentIndex = orderedClues.findIndex(
+        ({ direction, number }) =>
+          direction === currentDirection && number === currentNumber
+      );
+
+      const nextIndex =
+        currentIndex === -1 ? 0 : (currentIndex + 1) % orderedClues.length;
+
+      const nextClue = orderedClues[nextIndex];
+      handleClueSelected(nextClue.direction, nextClue.number);
+    }, [clues, currentDirection, currentNumber, handleClueSelected]);
+
     const registerFocusHandler = useCallback(
       (focusHandler: FocusHandler | null) => {
         // console.log('CrosswordProvider.registerFocusHandler() called', {
@@ -1080,11 +1116,15 @@ const CrosswordProvider = React.forwardRef<
          * @since 5.3.0
          */
         fillCell: (letter: string) => {
-          if (!letter) {
-            return;
-          }
-
           handleSingleCharacter(letter[0]);
+        },
+
+        /**
+         * Moves selection to the next clue in order; wraps back to the first
+         * clue after the last.
+         */
+        selectNextClue: () => {
+          selectNextClue();
         },
       }),
       [
@@ -1092,6 +1132,7 @@ const CrosswordProvider = React.forwardRef<
         crosswordCorrect,
         focus,
         handleSingleCharacter,
+        selectNextClue,
         onLoadedCorrect,
         setCellCharacter,
         storageKey,
@@ -1111,6 +1152,7 @@ const CrosswordProvider = React.forwardRef<
         handleCellClick,
         handleInputClick,
         handleClueSelected,
+        selectNextClue,
         registerFocusHandler,
 
         focused,
@@ -1131,6 +1173,7 @@ const CrosswordProvider = React.forwardRef<
         handleCellClick,
         handleInputClick,
         handleClueSelected,
+        selectNextClue,
         registerFocusHandler,
         focused,
         focusedRow,
